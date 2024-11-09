@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.edu.ifsp.scl.sdm.petbook.domain.Consulta
 
-@Entity(tableName = "appointment")
+@Entity(tableName = "consulta")
 data class ConsultaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

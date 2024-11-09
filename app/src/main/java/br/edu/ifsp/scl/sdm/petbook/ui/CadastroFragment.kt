@@ -8,6 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -43,6 +45,18 @@ class CadastroFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val spinner: Spinner = binding.commonLayout.spAtendimento
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.tipos_consultas,
+            R.layout.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.spinner_item)
+            spinner.adapter = adapter
+        }
+
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.stateCadastro.collect {
                 when (it) {

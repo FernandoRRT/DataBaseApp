@@ -17,15 +17,37 @@ sealed class ConsultaState {
     data object InsertSuccess : ConsultaState()
     data object ShowLoading : ConsultaState()
 }
+sealed class ListaState {
+    data class SearchAllSuccess(val consultas: List<Consulta>) : ListaState()
+    data object ShowLoading : ListaState()
+    data object EmptyState : ListaState()
+}
 
 
 class ConsultaViewModel (private val repository: ConsultaRepository) : ViewModel(){
     private val _stateCadastro = MutableStateFlow<ConsultaState>(ConsultaState.ShowLoading)
     val stateCadastro = _stateCadastro.asStateFlow()
+
+    private val _stateList = MutableStateFlow<ListaState>(ListaState.ShowLoading)
+    val stateList = _stateList.asStateFlow()
+
     fun insert(consultaEntity: Consulta) = viewModelScope.launch(Dispatchers.IO){
         repository.insert(consultaEntity)
         _stateCadastro.value=ConsultaState.InsertSuccess
     }
+
+    fun getAllContacts(){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.getAllConsultas().collect{ result ->
+                if (result.isEmpty()){
+                    _stateList.value = ListaState.EmptyState
+                }else{
+                    _stateList.value = ListaState.SearchAllSuccess(result)
+                }
+            }
+        }
+    }
+
     companion object {
         fun consultaViewModelFactory() : ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {

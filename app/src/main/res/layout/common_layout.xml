@@ -1,84 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nome_do_pet"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/etNome"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/digite_o_nome_do_animal"
-        android:textSize="16sp" />
+        android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nome_da_cl_nica"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nome_do_pet"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/etClinica"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/digite_o_nome_da_cl_nica"
-        android:textSize="16sp" />
+        <EditText
+            android:id="@+id/etNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/digite_o_nome_do_animal"
+            android:textSize="22sp"
+            android:minHeight="24dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tipo_de_atendimento"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nome_da_cl_nica"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-    <Spinner
-        android:id="@+id/spAtendimento"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/tipos_consultas"
+        <EditText
+            android:id="@+id/etClinica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/digite_o_nome_da_cl_nica"
+            android:textSize="22sp"
+            android:minHeight="24dp" />
 
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_de_atendimento"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/data_do_atendimento"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spAtendimento"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown"
+            android:entries="@array/tipos_consultas"
+            android:popupBackground="@android:color/white"
+            android:layout="@layout/spinner_item"
+           />
 
-    <EditText
-        android:id="@+id/etData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:hint="dd/mm/aaaa"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_do_atendimento"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-    <!-- Field: Description of Consultation -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/descri_o_do_atendimento"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        <EditText
+            android:id="@+id/etData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="dd/mm/aaaa"
+            android:textSize="22sp"
+            android:minHeight="24dp" />
 
-    <EditText
-        android:id="@+id/etDescricao"
-        android:hint="@string/descreva_os_procedimentos_realizados"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:lines="8"
-        android:maxLines="10"
-        android:minLines="6"
-        android:scrollbars="vertical"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/descri_o_do_atendimento"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/etDescricao"
+            android:hint="@string/descreva_os_procedimentos_realizados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLines="10"
+            android:minLines="6"
+            android:scrollbars="vertical"
+            android:gravity="top"
+            android:textSize="18sp" />
+    </LinearLayout>
+</ScrollView>
