@@ -12,4 +12,7 @@ interface ConsultaDao {
 
     @Query("SELECT * FROM consulta ORDER BY nome")
     fun getAllConsultas(): Flow<List<ConsultaEntity>>
+
+    @Query("SELECT * FROM consulta WHERE id = :id")
+    fun getConsultaById(id: Int): Flow<ConsultaEntity>
 }

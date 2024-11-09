@@ -8,7 +8,9 @@ import br.edu.ifsp.scl.sdm.petbook.domain.Consulta
 
 class ConsultaAdapter: RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>() {
     var consultasLista = ArrayList<Consulta>()
+    var onIntemClick: ((Consulta) -> Unit)? = null
     private lateinit var binding: ConsultaCelulaBinding
+
     fun updateList(newList: List<Consulta> ){
         consultasLista = newList as ArrayList<Consulta>
         notifyDataSetChanged()
@@ -31,5 +33,10 @@ class ConsultaAdapter: RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>(
     {
         val tipoVH = view.tipo
         val dataVH = view.data
+        init {
+            view.root.setOnClickListener {
+                onIntemClick?.invoke(consultasLista[adapterPosition])
+            }
+        }
     }
 }

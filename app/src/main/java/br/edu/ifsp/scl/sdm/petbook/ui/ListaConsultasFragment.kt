@@ -22,7 +22,6 @@ class ListaConsultasFragment : Fragment() {
     lateinit var consultaAdapter: ConsultaAdapter
     val viewModel : ConsultaViewModel by viewModels { ConsultaViewModel.consultaViewModelFactory() }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -62,5 +61,13 @@ class ListaConsultasFragment : Fragment() {
     {
         consultaAdapter = ConsultaAdapter().apply { updateList(consultastList) }
         binding.recyclerview.adapter = consultaAdapter
+
+        consultaAdapter.onIntemClick = {
+            val bundle = Bundle()
+            bundle.putInt("idConsulta", it.id)
+            findNavController().navigate(
+                R.id.action_listaConsultasFragment_to_detalheFragment,
+                bundle)
+        }
     }
 }
