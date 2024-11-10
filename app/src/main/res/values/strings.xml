@@ -12,6 +12,7 @@
     <string name="descreva_os_procedimentos_realizados">Descreva os procedimentos realizados</string>
     <string name="descri_o_do_atendimento">Descrição do atendimento</string>
     <string name="salvar">Salvar</string>
+    <string name="excluir">Excluir</string>
     <string-array name="tipos_consultas">
         <item>Consulta</item>
         <item>Vacinação</item>

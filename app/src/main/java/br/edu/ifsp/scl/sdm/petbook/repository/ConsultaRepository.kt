@@ -12,6 +12,14 @@ class ConsultaRepository  (private val consultaDao: ConsultaDao) {
         return consultaDao.insert(consulta.toEntity())
     }
 
+    suspend fun update(consulta: Consulta) {
+        return consultaDao.update(consulta.toEntity())
+    }
+
+    suspend fun delete(consulta: Consulta) {
+        return consultaDao.delete(consulta.toEntity())
+    }
+
     fun getAllConsultas(): Flow<List<Consulta>> {
         return consultaDao.getAllConsultas().map { consultaEntityList ->
             consultaEntityList.map { it.toDomain() }

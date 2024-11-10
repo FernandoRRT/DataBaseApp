@@ -23,11 +23,14 @@ sealed class ListaState {
     data object EmptyState : ListaState()
 }
 sealed class DetalheState {
+    data object UpdateSuccess : DetalheState()
+    data object DeleteSuccess : DetalheState()
     data class GetByIdSuccess(val c: Consulta) : DetalheState()
     data object ShowLoading : DetalheState()
 }
 
 class ConsultaViewModel (private val repository: ConsultaRepository) : ViewModel(){
+
     private val _stateCadastro = MutableStateFlow<ConsultaState>(ConsultaState.ShowLoading)
     val stateCadastro = _stateCadastro.asStateFlow()
 
@@ -37,12 +40,19 @@ class ConsultaViewModel (private val repository: ConsultaRepository) : ViewModel
     private val _stateDetail = MutableStateFlow<DetalheState>(DetalheState.ShowLoading)
     val stateDetail = _stateDetail.asStateFlow()
 
-
-
-
     fun insert(consultaEntity: Consulta) = viewModelScope.launch(Dispatchers.IO){
         repository.insert(consultaEntity)
         _stateCadastro.value=ConsultaState.InsertSuccess
+    }
+
+    fun update(consultaEntity: Consulta) = viewModelScope.launch(Dispatchers.IO){
+        repository.update(consultaEntity)
+        _stateDetail.value=DetalheState.UpdateSuccess
+    }
+
+    fun delete(consultaEntity: Consulta) = viewModelScope.launch(Dispatchers.IO){
+        repository.delete(consultaEntity)
+        _stateDetail.value=DetalheState.DeleteSuccess
     }
 
     fun getAllContacts(){
