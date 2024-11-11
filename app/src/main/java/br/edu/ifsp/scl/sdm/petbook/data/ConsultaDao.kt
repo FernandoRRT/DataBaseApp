@@ -18,7 +18,7 @@ interface ConsultaDao {
     @Delete
     suspend fun delete(consultaEntity: ConsultaEntity)
 
-    @Query("SELECT * FROM consulta ORDER BY nome")
+    @Query("SELECT * FROM consulta ORDER BY data")
     fun getAllConsultas(): Flow<List<ConsultaEntity>>
 
     @Query("SELECT * FROM consulta WHERE id = :id")

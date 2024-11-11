@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/listaConsultasFragment"
         android:name="br.edu.ifsp.scl.sdm.petbook.ui.ListaConsultasFragment"
-        android:label="fragment_lista_consultas"
+        android:label="@string/consultas_cadastradas"
         tools:layout="@layout/fragment_lista_consultas" >
         <action
             android:id="@+id/action_listaConsultasFragment_to_cadastroFragment"
@@ -19,11 +19,11 @@
     <fragment
         android:id="@+id/cadastroFragment"
         android:name="br.edu.ifsp.scl.sdm.petbook.ui.CadastroFragment"
-        android:label="fragment_cadastro"
+        android:label="@string/criar_consulta"
         tools:layout="@layout/fragment_cadastro" />
     <fragment
         android:id="@+id/detalheFragment"
         android:name="br.edu.ifsp.scl.sdm.petbook.ui.DetalheFragment"
-        android:label="fragment_detalhe"
+        android:label="@string/editar_consulta"
         tools:layout="@layout/fragment_detalhe" />
 </navigation>

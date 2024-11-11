@@ -55,7 +55,7 @@ class ConsultaViewModel (private val repository: ConsultaRepository) : ViewModel
         _stateDetail.value=DetalheState.DeleteSuccess
     }
 
-    fun getAllContacts(){
+    fun getAllAppointments(){
         viewModelScope.launch(Dispatchers.IO){
             repository.getAllConsultas().collect{ result ->
                 if (result.isEmpty()){

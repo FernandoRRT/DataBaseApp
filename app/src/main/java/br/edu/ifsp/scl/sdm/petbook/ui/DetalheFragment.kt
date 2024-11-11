@@ -23,6 +23,10 @@ import br.edu.ifsp.scl.sdm.petbook.viewmodel.ConsultaViewModel
 import br.edu.ifsp.scl.sdm.petbook.viewmodel.DetalheState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class DetalheFragment : Fragment() {
@@ -38,6 +42,8 @@ class DetalheFragment : Fragment() {
     lateinit var descricaoEditText: EditText
 
     val viewModel : ConsultaViewModel by viewModels { ConsultaViewModel.consultaViewModelFactory() }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,13 +107,29 @@ class DetalheFragment : Fragment() {
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
             return when (menuItem.itemId) {
                 R.id.action_alterarConsulta -> {
-                    consulta.nome=nomeEditText.text.toString()
-                    consulta.clinica=clinicaEditText.text.toString()
-                    consulta.data=dataEditText.text.toString()
-                    consulta.tipo=atendimentoSpinner.selectedItem.toString()
-                    consulta.descricao=descricaoEditText.text.toString()
-                    viewModel.update(consulta)
-                    true
+                    val nome = nomeEditText.text.toString()
+                    val clinica = clinicaEditText.text.toString()
+                    val data = dataEditText.text.toString()
+                    val tipo = atendimentoSpinner.selectedItem.toString()
+                    val descricao = descricaoEditText.text.toString()
+
+                    // Validação da data
+                    if (isValidDate(data)) {
+                        consulta.nome = nome
+                        consulta.clinica = clinica
+                        consulta.data = data
+                        consulta.tipo = tipo
+                        consulta.descricao = descricao
+                        viewModel.update(consulta)
+                        true
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            "Por favor, insira uma data válida no formato dd/MM/yyyy.",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        false
+                    }
                 }
                 R.id.action_excluirConsulta ->{
                     viewModel.delete(consulta)
@@ -119,16 +141,21 @@ class DetalheFragment : Fragment() {
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 }
 
-
-
     private fun fillFields(c: Consulta) {
         consulta = c
         nomeEditText.setText(consulta.nome)
         clinicaEditText.setText(consulta.clinica)
+
+        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         dataEditText.setText(consulta.data)
         atendimentoSpinner.setSelection(
             resources.getStringArray(R.array.tipos_consultas).indexOf(consulta.tipo)
         )
         descricaoEditText.setText(consulta.descricao)
+    }
+
+    fun isValidDate(date: String): Boolean {
+        val regex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$".toRegex()
+        return regex.matches(date)
     }
 }

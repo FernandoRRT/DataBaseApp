@@ -35,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="?attr/colorPrimary"
+        app:backgroundTint="@color/appBackground"
         app:elevation="16dp"
         app:fabSize="normal"
         app:tint="@android:color/white" />

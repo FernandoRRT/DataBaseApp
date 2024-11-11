@@ -11,6 +11,6 @@ data class Consulta(
     var descricao: String
 ) {
     fun toEntity(): ConsultaEntity {
-        return ConsultaEntity(id, nome, clinica, tipo, data, descricao)
+        return ConsultaEntity(id, nome, clinica, tipo, data.toString(), descricao)
     }
 }

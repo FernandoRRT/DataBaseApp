@@ -2,10 +2,16 @@ package br.edu.ifsp.scl.sdm.petbook.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import br.edu.ifsp.scl.sdm.petbook.R
@@ -15,12 +21,15 @@ import br.edu.ifsp.scl.sdm.petbook.domain.Consulta
 import br.edu.ifsp.scl.sdm.petbook.viewmodel.ConsultaViewModel
 import br.edu.ifsp.scl.sdm.petbook.viewmodel.ListaState
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 
 class ListaConsultasFragment : Fragment() {
     private var _binding: FragmentListaConsultasBinding? = null
     private val binding get() = _binding!!
     lateinit var consultaAdapter: ConsultaAdapter
     val viewModel : ConsultaViewModel by viewModels { ConsultaViewModel.consultaViewModelFactory() }
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +49,63 @@ class ListaConsultasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getAllContacts()
+        viewModel.getAllAppointments()
         setupViewModel()
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object: MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.main_menu, menu)
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.filtraConsultas -> {
+                        filterConsultas("Consulta")
+                        true
+                    }
+                    R.id.filtraVacinas -> {
+                        filterConsultas("Vacinação")
+                        true
+                    }
+                    R.id.filtraCheckups -> {
+                        filterConsultas("Check-up")
+                        true
+                    }
+                    R.id.filtraCirurgias -> {
+                        filterConsultas("Cirurgia")
+                        true
+                    }
+                    R.id.filtraEmergencia -> {
+                        filterConsultas("Emergência")
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun filterConsultas(tipo: String) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.stateList.collect { state ->
+                when (state) {
+                    is ListaState.SearchAllSuccess -> {
+                        val filteredConsultas = when (tipo) {
+                            "Consulta" -> state.consultas.filter { it.tipo == "Consulta" }
+                            "Vacinação" -> state.consultas.filter { it.tipo == "Vacinação" }
+                            "Check-up" -> state.consultas.filter { it.tipo == "Check-up" }
+                            "Cirurgia" -> state.consultas.filter { it.tipo == "Cirurgia" }
+                            "Emergência" -> state.consultas.filter { it.tipo == "Emergência" }
+                            else -> state.consultas // Se "consultas" ou outro valor for passado, mostra todas
+                        }
+                        setupRecyclerView(filteredConsultas)
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     private fun setupViewModel() {
@@ -57,9 +121,13 @@ class ListaConsultasFragment : Fragment() {
             }
         }
     }
-    private fun setupRecyclerView(consultastList: List<Consulta>)
+    private fun setupRecyclerView(consultasList: List<Consulta>)
     {
-        consultaAdapter = ConsultaAdapter().apply { updateList(consultastList) }
+        val formattedConsultas = consultasList.map {
+            it.copy(data = it.data.format(dateFormatter))
+        }
+
+        consultaAdapter = ConsultaAdapter().apply { updateList(formattedConsultas) }
         binding.recyclerview.adapter = consultaAdapter
 
         consultaAdapter.onIntemClick = {
@@ -70,4 +138,5 @@ class ListaConsultasFragment : Fragment() {
                 bundle)
         }
     }
+
 }

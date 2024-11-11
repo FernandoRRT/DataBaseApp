@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ifsp.scl.sdm.petbook.databinding.ConsultaCelulaBinding
 import br.edu.ifsp.scl.sdm.petbook.domain.Consulta
+import java.time.format.DateTimeFormatter
 
 class ConsultaAdapter: RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>() {
     var consultasLista = ArrayList<Consulta>()
@@ -15,6 +16,7 @@ class ConsultaAdapter: RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>(
         consultasLista = newList as ArrayList<Consulta>
         notifyDataSetChanged()
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -22,13 +24,22 @@ class ConsultaAdapter: RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>(
         binding = ConsultaCelulaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ConsultaViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: ConsultaViewHolder, position: Int) {
-        holder.tipoVH.text = consultasLista[position].tipo
-        holder.dataVH.text = consultasLista[position].data
+//        holder.tipoVH.text = consultasLista[position].tipo
+//        holder.dataVH.text = consultasLista[position].data
+
+        val consulta = consultasLista[position]
+        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        holder.tipoVH.text = consulta.tipo
+        holder.dataVH.text = consulta.data.format(dateFormatter)
     }
+
     override fun getItemCount(): Int {
         return consultasLista.size
     }
+
     inner class ConsultaViewHolder(view: ConsultaCelulaBinding): RecyclerView.ViewHolder(view.root)
     {
         val tipoVH = view.tipo

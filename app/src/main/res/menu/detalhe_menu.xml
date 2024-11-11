@@ -5,10 +5,12 @@
         android:id="@+id/action_alterarConsulta"
         android:title="@string/salvar"
         android:icon="@drawable/baseline_save_24"
+        app:iconTint="@color/white"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_excluirConsulta"
         android:title="@string/excluir"
         android:icon="@drawable/baseline_delete_24"
+        app:iconTint="@color/white"
         app:showAsAction="always"/>
 </menu>

@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/filtraConsultas"
+        android:title="@string/s_consultas"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filtraVacinas"
+        android:title="@string/s_vacinas"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filtraCheckups"
+        android:title="@string/s_check_ups"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filtraCirurgias"
+        android:title="@string/s_cirurgias"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filtraEmergencia"
+        android:title="@string/s_emerg_ncias"
+        app:showAsAction="never" />
+</menu>

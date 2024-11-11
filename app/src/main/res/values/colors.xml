@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Cores básicas -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Cor personalizada (roxo) -->
+    <color name="purple">#800080</color>
+    <color name="appBackground">#9C27B0</color>
+
+    <!-- Cores adicionais -->
+    <color name="primaryColor">#6200EE</color> <!-- Exemplo de cor primária -->
+    <color name="primaryDarkColor">#3700B3</color> <!-- Exemplo de cor escura primária -->
+    <color name="accentColor">#03DAC5</color> <!-- Exemplo de cor de destaque -->
+
+    <!-- Cores de texto -->
+    <color name="textColorPrimary">#000000</color> <!-- Texto principal -->
+    <color name="textColorSecondary">#808080</color> <!-- Texto secundário -->
 </resources>

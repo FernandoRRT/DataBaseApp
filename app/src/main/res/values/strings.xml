@@ -13,6 +13,14 @@
     <string name="descri_o_do_atendimento">Descrição do atendimento</string>
     <string name="salvar">Salvar</string>
     <string name="excluir">Excluir</string>
+    <string name="consultas_cadastradas">Consultas cadastradas</string>
+    <string name="criar_consulta">Criar Consulta</string>
+    <string name="editar_consulta">Editar Consulta</string>
+    <string name="s_consultas">Só Consultas</string>
+    <string name="s_vacinas">Só vacinas</string>
+    <string name="s_cirurgias">Só Cirurgias</string>
+    <string name="s_emerg_ncias">Só Emergências</string>
+    <string name="s_check_ups">Só Check-ups</string>
     <string-array name="tipos_consultas">
         <item>Consulta</item>
         <item>Vacinação</item>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/purple</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+
+
+        <!-- Cor do título da Toolbar -->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!-- Cor do ícone de navegação (seta de voltar) -->
+        <item name="android:navigationIcon">@color/white</item>
+
+
+
+        <!-- Cor dos ícones do menu (ícone de três pontos) -->
+        <item name="android:textColorSecondary">@color/white</item>
+        <!-- Usando ThemeOverlay -->
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+</resources>

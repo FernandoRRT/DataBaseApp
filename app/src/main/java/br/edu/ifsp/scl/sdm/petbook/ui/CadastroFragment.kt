@@ -75,11 +75,11 @@ class CadastroFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // Add menu items here
+
                 menuInflater.inflate(R.menu.cadastro_menu, menu)
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
+
                 return when (menuItem.itemId) {
                     R.id.action_salvarConsulta -> {
                         val nome = binding.commonLayout.etNome.text.toString()
@@ -88,13 +88,25 @@ class CadastroFragment : Fragment() {
                         val data = binding.commonLayout.etData.text.toString()
                         val descricao = binding.commonLayout.etDescricao.text.toString()
 
-                        val consulta = Consulta(nome=nome, clinica=clinica, tipo=tipo, data=data, descricao=descricao)
-                        viewModel.insert(consulta)
+                        if (isValidDate(data)) {
+                            val consulta = Consulta(nome=nome, clinica=clinica, tipo=tipo, data=data, descricao=descricao)
+                            viewModel.insert(consulta)
+                        } else {
+                            Snackbar.make(
+                                binding.root,
+                                "Por favor, insira uma data válida no formato dd/MM/yyyy.",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                         true
                     }
                     else -> false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+    fun isValidDate(date: String): Boolean {
+        val regex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$".toRegex()
+        return regex.matches(date)
     }
 }
