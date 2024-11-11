@@ -24,6 +24,9 @@ import br.edu.ifsp.scl.sdm.petbook.viewmodel.ConsultaState
 import br.edu.ifsp.scl.sdm.petbook.viewmodel.ConsultaViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 class CadastroFragment : Fragment() {
@@ -89,7 +92,11 @@ class CadastroFragment : Fragment() {
                         val descricao = binding.commonLayout.etDescricao.text.toString()
 
                         if (isValidDate(data)) {
-                            val consulta = Consulta(nome=nome, clinica=clinica, tipo=tipo, data=data, descricao=descricao)
+
+                            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+                            val localDate = LocalDate.parse(data, formatter)
+
+                            val consulta = Consulta(nome=nome, clinica=clinica, tipo=tipo, data=localDate, descricao=descricao)
                             viewModel.insert(consulta)
                         } else {
                             Snackbar.make(

@@ -23,11 +23,9 @@ import br.edu.ifsp.scl.sdm.petbook.viewmodel.ConsultaViewModel
 import br.edu.ifsp.scl.sdm.petbook.viewmodel.DetalheState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-
 
 class DetalheFragment : Fragment() {
     private var _binding: FragmentDetalheBinding? = null
@@ -43,11 +41,10 @@ class DetalheFragment : Fragment() {
 
     val viewModel : ConsultaViewModel by viewModels { ConsultaViewModel.consultaViewModelFactory() }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,9 +62,9 @@ class DetalheFragment : Fragment() {
         atendimentoSpinner = binding.commonLayout.spAtendimento
 
         val idConsulta = requireArguments().getInt("idConsulta")
-        viewModel.getContactById(idConsulta)
+        viewModel.getConsultaById(idConsulta)
 
-        viewLifecycleOwner.lifecycleScope.launch{
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.stateDetail.collect {
                 when (it) {
                     DetalheState.DeleteSuccess -> {
@@ -91,71 +88,77 @@ class DetalheFragment : Fragment() {
                     DetalheState.ShowLoading -> {}
 
                     is DetalheState.GetByIdSuccess -> {
-                        fillFields(it.c)
+                        fillFields(it.consulta)
                     }
                 }
             }
         }
 
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object: MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.detalhe_menu, menu)
+            }
 
-    val menuHost: MenuHost = requireActivity()
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_alterarConsulta -> {
+                        val nome = nomeEditText.text.toString()
+                        val clinica = clinicaEditText.text.toString()
+                        val data = dataEditText.text.toString()
+                        val tipo = atendimentoSpinner.selectedItem.toString()
+                        val descricao = descricaoEditText.text.toString()
 
-    menuHost.addMenuProvider(object: MenuProvider {
-        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-            menuInflater.inflate(R.menu.detalhe_menu, menu)
-        }
-        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-            return when (menuItem.itemId) {
-                R.id.action_alterarConsulta -> {
-                    val nome = nomeEditText.text.toString()
-                    val clinica = clinicaEditText.text.toString()
-                    val data = dataEditText.text.toString()
-                    val tipo = atendimentoSpinner.selectedItem.toString()
-                    val descricao = descricaoEditText.text.toString()
+                        // Validação da data
+                        val formattedDate = parseDate(data)
 
-                    // Validação da data
-                    if (isValidDate(data)) {
-                        consulta.nome = nome
-                        consulta.clinica = clinica
-                        consulta.data = data
-                        consulta.tipo = tipo
-                        consulta.descricao = descricao
-                        viewModel.update(consulta)
+                        if (formattedDate != null) {
+                            consulta.nome = nome
+                            consulta.clinica = clinica
+                            consulta.data = formattedDate // Agora é LocalDate
+                            consulta.tipo = tipo
+                            consulta.descricao = descricao
+                            viewModel.update(consulta)
+                            true
+                        } else {
+                            Snackbar.make(
+                                binding.root,
+                                "Por favor, insira uma data válida no formato dd/MM/yyyy.",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            false
+                        }
+                    }
+                    R.id.action_excluirConsulta -> {
+                        viewModel.delete(consulta)
                         true
-                    } else {
-                        Snackbar.make(
-                            binding.root,
-                            "Por favor, insira uma data válida no formato dd/MM/yyyy.",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        false
                     }
+                    else -> false
                 }
-                R.id.action_excluirConsulta ->{
-                    viewModel.delete(consulta)
-                    true
-                }
-                else -> false
             }
-        }
-    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-}
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
 
     private fun fillFields(c: Consulta) {
         consulta = c
         nomeEditText.setText(consulta.nome)
         clinicaEditText.setText(consulta.clinica)
 
+        // Formatação de data de LocalDate para String para exibição
         val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        dataEditText.setText(consulta.data)
+        dataEditText.setText(consulta.data.format(dateFormatter))
         atendimentoSpinner.setSelection(
             resources.getStringArray(R.array.tipos_consultas).indexOf(consulta.tipo)
         )
         descricaoEditText.setText(consulta.descricao)
     }
 
-    fun isValidDate(date: String): Boolean {
-        val regex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$".toRegex()
-        return regex.matches(date)
+    fun parseDate(date: String): LocalDate? {
+        val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return try {
+            LocalDate.parse(date, dateFormatter)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

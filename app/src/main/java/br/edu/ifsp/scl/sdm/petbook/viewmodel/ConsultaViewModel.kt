@@ -25,7 +25,7 @@ sealed class ListaState {
 sealed class DetalheState {
     data object UpdateSuccess : DetalheState()
     data object DeleteSuccess : DetalheState()
-    data class GetByIdSuccess(val c: Consulta) : DetalheState()
+    data class GetByIdSuccess(val consulta: Consulta) : DetalheState()
     data object ShowLoading : DetalheState()
 }
 
@@ -67,7 +67,7 @@ class ConsultaViewModel (private val repository: ConsultaRepository) : ViewModel
         }
     }
 
-    fun getContactById(id: Int) {
+    fun getConsultaById (id: Int) {
         viewModelScope.launch {
             repository.getConsultaById(id).collect { result ->
                 _stateDetail.value = DetalheState.GetByIdSuccess(result)

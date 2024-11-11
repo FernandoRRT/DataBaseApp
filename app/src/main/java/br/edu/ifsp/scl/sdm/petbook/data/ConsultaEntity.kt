@@ -3,6 +3,7 @@ package br.edu.ifsp.scl.sdm.petbook.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.edu.ifsp.scl.sdm.petbook.domain.Consulta
+import java.time.LocalDate
 
 @Entity(tableName = "consulta")
 data class ConsultaEntity(
@@ -11,7 +12,7 @@ data class ConsultaEntity(
     val nome: String,
     val clinica: String,
     val tipo: String,
-    val data: String,
+    val data: LocalDate,
     val descricao: String
 ) {
     fun toDomain(): Consulta {
